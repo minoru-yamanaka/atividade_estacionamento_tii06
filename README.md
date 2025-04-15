@@ -1,7 +1,7 @@
 # 🧾 Descrição do Problema — Sistema de Estacionamento
 Você deve implementar um sistema de estacionamento com foco em operações básicas de cadastro, registro de entrada/saída de veículos e cálculo de cobrança. O sistema deve ser desenvolvido utilizando JavaScript com uma abordagem orientada a objetos. A persistência dos dados pode ser feita com Local Storage.
 
-# 🎯 Objetivo
+## 🎯 Objetivo
 Registrar a entrada e saída de veículos em um estacionamento, mantendo o controle dos clientes, funcionários e dos registros de uso do estacionamento.
 
 ---
@@ -79,9 +79,9 @@ Deve ser possível listar:
 ## 💾 Persistência
 Utilize Local Storage para armazenar:
 
-CRUD de clientes (com seus veículos)
-Lista de registros de estacionamento
-CRUD de funcionários (opcional, mas bem vindo)
+- CRUD de clientes (com seus veículos)
+- Lista de registros de estacionamento
+- CRUD de funcionários (opcional, mas bem vindo)
 
 ## 🧪 Funcionalidades Esperadas
 
