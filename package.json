@@ -1,0 +1,12 @@
+{
+  "name": "atividade_estacionamento_tii06-main",
+  "version": "1.0.0",
+  "description": "Você deve implementar um sistema de estacionamento com foco em operações básicas de cadastro, registro de entrada/saída de veículos e cálculo de cobrança. O sistema deve ser desenvolvido utilizando JavaScript com uma abordagem orientada a objetos. A persistência dos dados pode ser feita com Local Storage.",
+  "main": "Clientes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
