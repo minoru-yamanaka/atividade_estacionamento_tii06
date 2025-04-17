@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sistema de Estacionamento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+
+    section {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+
+    input, select {
+      margin: 5px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      width: 250px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 8px 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #444;
+    }
+
+    label {
+      display: inline-block;
+      width: 150px;
+      margin-right: 10px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border-left: 3px solid #4CAF50;
+    }
+
+    .tab-navigation {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .tab-navigation button {
+      margin: 0 5px;
+      background-color: #ddd;
+      color: #333;
+    }
+
+    .tab-navigation button.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .status-veiculos {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚗 Sistema de Estacionamento</h1>
+  
+  <div class="tab-navigation">
+    <button onclick="showTab('tab-cliente')" class="active">Clientes</button>
+    <button onclick="showTab('tab-veiculo')">Veículos</button>
+    <button onclick="showTab('tab-funcionario')">Funcionários</button>
+    <button onclick="showTab('tab-operacoes')">Operações</button>
+    <button onclick="showTab('tab-relatorios')">Relatórios</button>
+  </div>
+
+  <!-- Tab: Clientes -->
+  <div id="tab-cliente" class="tab-content active">
+    <section>
+      <h2>Cadastro de Cliente</h2>
+      <label>Nome:</label><input type="text" id="clienteNome" /><br />
+      <label>Documento:</label><input type="text" id="clienteDocumento" /><br />
+      <button onclick="cadastrarCliente()">Cadastrar Cliente</button>
+      <button onclick="listarClientes()">Listar Clientes</button>
+      <button onclick="limparFormularioCliente()">Limpar</button>
+      <div id="clientesCadastrados"></div>
+    </section>
+  </div>
+
+  <!-- Tab: Veículos -->
+  <div id="tab-veiculo" class="tab-content">
+    <section>
+      <h2>Cadastro de Veículo</h2>
+      <label>Cliente:</label>
+      <select id="selectCliente"></select><br />
+      <label>Placa:</label><input type="text" id="veiculoPlaca" /><br />
+      <label>Modelo:</label><input type="text" id="veiculoModelo" /><br />
+      <label>Cor:</label><input type="text" id="veiculoCor" /><br />
+      <label>Tipo:</label>
+      <select id="veiculoTipo">
+        <option value="carro">Carro</option>
+        <option value="moto">Moto</option>
+        <option value="caminhonete">Caminhonete</option>
+        <option value="van">Van</option>
+        <option value="outro">Outro</option>
+      </select><br />
+      <button onclick="cadastrarVeiculo()">Cadastrar Veículo</button>
+      <button onclick="listarVeiculos()">Listar Veículos</button>
+      <button onclick="limparFormularioVeiculo()">Limpar</button>
+      <div id="veiculosCadastrados"></div>
+    </section>
+  </div>
+
+  <!-- Tab: Funcionários -->
+  <div id="tab-funcionario" class="tab-content">
+    <section>
+      <h2>Cadastro de Funcionário</h2>
+      <label>Nome:</label><input type="text" id="funcionarioNome"><br>
+      <label>Documento:</label><input type="text" id="funcionarioDocumento"><br>
+      <label>Matrícula:</label><input type="text" id="funcionarioMatricula"><br>
+      <label>Cargo:</label>
+      <select id="funcionarioCargo">
+        <option value="atendente">Atendente</option>
+        <option value="gerente">Gerente</option>
+        <option value="manobrista">Manobrista</option>
+        <option value="seguranca">Segurança</option>
+      </select><br>
+      <button onclick="cadastrarFuncionario()">Cadastrar Funcionário</button>
+      <button onclick="listarFuncionarios()">Listar Funcionários</button>
+      <button onclick="limparFormularioFuncionario()">Limpar</button>
+      <div id="funcionariosCadastrados"></div>
+    </section>
+  </div>
+
+  <!-- Tab: Operações -->
+  <div id="tab-operacoes" class="tab-content">
+    <section>
+      <h2>Entrada de Veículo</h2>
+      <label>Placa:</label><input type="text" id="entradaPlaca" />
+      <button onclick="registrarEntrada()">Registrar Entrada</button>
+    </section>
+
+    <section>
+      <h2>Saída de Veículo</h2>
+      <label>Placa:</label><input type="text" id="saidaPlaca" />
+      <button onclick="registrarSaida()">Registrar Saída</button>
+    </section>
+
+    <section class="status-veiculos">
+      <h2>Veículos no Estacionamento</h2>
+      <button onclick="listarVeiculosNoEstacionamento()">Atualizar Lista</button>
+      <div id="veiculosEstacionados"></div>
+    </section>
+  </div>
+
+  <!-- Tab: Relatórios -->
+  <div id="tab-relatorios" class="tab-content">
+    <section>
+      <h2>📋 Registros Finalizados</h2>
+      <button onclick="listarRegistros()">Atualizar Registros</button>
+      <ul id="registrosFinalizados"></ul>
+    </section>
+  </div>
+
+  <script>
+    // Classes para Clientes, Veículos, Funcionários e Registros de Estacionamento
+    class Pessoa {
+      constructor(nome, documento) {
+        if (new.target === Pessoa) throw new Error("Classe abstrata!");
+        this.nome = nome;
+        this.documento = documento;
+      }
+    }
+
+    class Cliente extends Pessoa {
+      constructor(id, nome, documento) {
+        super(nome, documento);
+        this.id = id;
+      }
+    }
+
+    class Veiculo {
+      constructor(placa, modelo, cor, tipo, clienteId) {
+        this.placa = placa;
+        this.modelo = modelo;
+        this.cor = cor;
+        this.tipo = tipo;
+        this.clienteId = clienteId;
+      }
+    }
+
+    class Funcionario extends Pessoa {
+      constructor(nome, documento, matricula, cargo) {
+        super(nome, documento);
+        this.matricula = matricula;
+        this.cargo = cargo;
+      }
+    }
+
+    class RegistroEstacionamento {
+      constructor(id, veiculo, cliente, horaEntrada) {
+        this.id = id;
+        this.veiculo = veiculo;
+        this.cliente = cliente;
+        this.horaEntrada = horaEntrada;
+        this.horaSaida = null;
+        this.valorCobrado = null;
+      }
+    }
+
+    // Funções de manipulação de armazenamento
+    const storage = {
+      get: key => JSON.parse(localStorage.getItem(key)) || [],
+      set: (key, data) => localStorage.setItem(key, JSON.stringify(data)),
+      add: (key, item) => {
+        const items = storage.get(key);
+        items.push(item);
+        storage.set(key, items);
+      },
+      remove: (key, id) => {
+        const items = storage.get(key).filter(item => item.id !== id);
+        storage.set(key, items);
+      },
+      update: (key, updatedItem) => {
+        const items = storage.get(key).map(item => item.id === updatedItem.id ? updatedItem : item);
+        storage.set(key, items);
+      }
+    };
+
+    // Função para mostrar tab
+    function showTab(tabId) {
+      // Ocultar todas as tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remover classe ativa de todos os botões
+      document.querySelectorAll('.tab-navigation button').forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      // Ativar a tab selecionada
+      document.getElementById(tabId).classList.add('active');
+      
+      // Ativar o botão correspondente
+      document.querySelector(`.tab-navigation button[onclick="showTab('${tabId}')"]`).classList.add('active');
+      
+      // Atualizar o conteúdo da tab ativa
+      switch(tabId) {
+        case 'tab-cliente':
+          listarClientes();
+          break;
+        case 'tab-veiculo':
+          listarVeiculos();
+          break;
+        case 'tab-funcionario':
+          listarFuncionarios();
+          break;
+        case 'tab-operacoes':
+          listarVeiculosNoEstacionamento();
+          break;
+        case 'tab-relatorios':
+          listarRegistros();
+          break;
+      }
+    }
+
+    // Função para cadastrar cliente
+    function cadastrarCliente() {
+      const nome = document.getElementById("clienteNome").value;
+      const documento = document.getElementById("clienteDocumento").value;
+      
+      if (!nome || !documento) {
+        return alert("Nome e documento são obrigatórios!");
+      }
+      
+      const clientes = storage.get("clientes");
+      const novoId = clientes.length > 0 ? Math.max(...clientes.map(c => c.id)) + 1 : 1;
+      const cliente = new Cliente(novoId, nome, documento);
+      storage.add("clientes", cliente);
+      alert("Cliente cadastrado com sucesso!");
+      listarClientes();
+      limparFormularioCliente();
+    }
+
+    // Função para listar clientes cadastrados
+    function listarClientes() {
+      const clientes = storage.get("clientes");
+      const div = document.getElementById("clientesCadastrados");
+      
+      if (clientes.length === 0) {
+        div.innerHTML = "<p>Nenhum cliente cadastrado.</p>";
+        return;
+      }
+      
+      div.innerHTML = "<ul>" + clientes.map(c => 
+        `<li>${c.nome} - ${c.documento} 
+        <button onclick="editarCliente(${c.id})">Editar</button>
+        <button onclick="removerCliente(${c.id})">Remover</button></li>`
+      ).join("") + "</ul>";
+      
+      const selectCliente = document.getElementById("selectCliente");
+      if (selectCliente) {
+        selectCliente.innerHTML = clientes.map(c => 
+          `<option value="${c.id}">${c.nome}</option>`
+        ).join("");
+      }
+    }
+
+    // Função para limpar o formulário de cliente
+    function limparFormularioCliente() {
+      document.getElementById("clienteNome").value = "";
+      document.getElementById("clienteDocumento").value = "";
+      // Resetar botão de cadastro caso esteja em modo de edição
+      const cadastrarBtn = document.querySelector("button[onclick^='cadastrarCliente']");
+      if (cadastrarBtn) {
+        cadastrarBtn.onclick = cadastrarCliente;
+        cadastrarBtn.textContent = "Cadastrar Cliente";
+      }
+    }
+
+    // Função para editar cliente
+    function editarCliente(id) {
+      const clientes = storage.get("clientes");
+      const cliente = clientes.find(c => c.id === id);
+      
+      if (!cliente) {
+        return alert("Cliente não encontrado!");
+      }
+      
+      document.getElementById("clienteNome").value = cliente.nome;
+      document.getElementById("clienteDocumento").value = cliente.documento;
+      
+      const cadastrarBtn = document.querySelector("button[onclick^='cadastrarCliente']");
+      cadastrarBtn.textContent = "Atualizar Cliente";
+      cadastrarBtn.onclick = function() {
+        atualizarCliente(id);
+      };
+    }
+
+    // Função para atualizar cliente
+    function atualizarCliente(id) {
+      const nome = document.getElementById("clienteNome").value;
+      const documento = document.getElementById("clienteDocumento").value;
+      
+      if (!nome || !documento) {
+        return alert("Nome e documento são obrigatórios!");
+      }
+      
+      const clienteAtualizado = new Cliente(id, nome, documento);
+      
+      const clientes = storage.get("clientes");
+      const index = clientes.findIndex(c => c.id === id);
+      
+      if (index === -1) {
+        return alert("Cliente não encontrado!");
+      }
+      
+      clientes[index] = clienteAtualizado;
+      storage.set("clientes", clientes);
+      
+      alert("Cliente atualizado com sucesso!");
+      listarClientes();
+      limparFormularioCliente();
+    }
+
+    // Função para remover cliente
+    function removerCliente(id) {
+      if (!confirm("Tem certeza que deseja remover este cliente?")) {
+        return;
+      }
+      
+      // Verificar se o cliente possui veículos
+      const veiculos = storage.get("veiculos");
+      const veiculosCliente = veiculos.filter(v => v.clienteId === id);
+      
+      if (veiculosCliente.length > 0) {
+        return alert("Este cliente possui veículos cadastrados. Remova os veículos primeiro.");
+      }
+      
+      const clientes = storage.get("clientes");
+      const novosClientes = clientes.filter(c => c.id !== id);
+      
+      if (clientes.length === novosClientes.length) {
+        return alert("Cliente não encontrado!");
+      }
+      
+      storage.set("clientes", novosClientes);
+      alert("Cliente removido com sucesso!");
+      listarClientes();
+    }
+
+    // Função para cadastrar veículo
+    function cadastrarVeiculo() {
+      const selectCliente = document.getElementById("selectCliente");
+      
+      if (!selectCliente || selectCliente.options.length === 0) {
+        return alert("Cadastre um cliente primeiro!");
+      }
+      
+      const clienteId = parseInt(selectCliente.value);
+      const placa = document.getElementById("veiculoPlaca").value;
+      const modelo = document.getElementById("veiculoModelo").value;
+      const cor = document.getElementById("veiculoCor").value;
+      const tipo = document.getElementById("veiculoTipo").value;
+      
+      if (!placa || !modelo || !cor || !tipo) {
+        return alert("Todos os campos são obrigatórios!");
+      }
+      
+      const veiculos = storage.get("veiculos");
+
+      if (veiculos.some(v => v.placa === placa)) {
+        return alert("Veículo com esta placa já está cadastrado!");
+      }
+
+      const novoVeiculo = new Veiculo(placa, modelo, cor, tipo, clienteId);
+      storage.add("veiculos", novoVeiculo);
+      alert("Veículo cadastrado com sucesso!");
+      listarVeiculos();
+      limparFormularioVeiculo();
+    }
+
+    // Função para listar veículos cadastrados
+    function listarVeiculos() {
+      const veiculos = storage.get("veiculos");
+      const clientes = storage.get("clientes");
+      const div = document.getElementById("veiculosCadastrados");
+      
+      if (veiculos.length === 0) {
+        div.innerHTML = "<p>Nenhum veículo cadastrado.</p>";
+        return;
+      }
+      
+      div.innerHTML = "<ul>" + veiculos.map(v => {
+        const cliente = clientes.find(c => c.id === v.clienteId);
+        const clienteNome = cliente ? cliente.nome : "Cliente não encontrado";
+        
+        return `<li>
+          <strong>${v.modelo}</strong> (${v.placa}) - ${v.cor} - ${v.tipo.toUpperCase()}<br>
+          Cliente: ${clienteNome}
+          <button onclick="editarVeiculo('${v.placa}')">Editar</button>
+          <button onclick="removerVeiculo('${v.placa}')">Remover</button>
+        </li>`;
+      }).join("") + "</ul>";
+    }
+
+    // Função para limpar o formulário de veículo
+    function limparFormularioVeiculo() {
+      document.getElementById("veiculoPlaca").value = "";
+      document.getElementById("veiculoModelo").value = "";
+      document.getElementById("veiculoCor").value = "";
+      document.getElementById("veiculoTipo").value = "carro";
+    }
+
+    // Função para editar veículo
+    function editarVeiculo(placa) {
+      const veiculos = storage.get("veiculos");
+      const veiculo = veiculos.find(v => v.placa === placa);
+      
+      if (!veiculo) {
+        return alert("Veículo não encontrado!");
+      }
+      
+      document.getElementById("veiculoPlaca").value = veiculo.placa;
+      document.getElementById("veiculoModelo").value = veiculo.modelo;
+      document.getElementById("veiculoCor").value = veiculo.cor;
+      document.getElementById("veiculoTipo").value = veiculo.tipo;
+      
+      const selectCliente = document.getElementById("selectCliente");
+      if (selectCliente) {
+        for (let i = 0; i < selectCliente.options.length; i++) {
+          if (parseInt(selectCliente.options[i].value) === veiculo.clienteId) {
+            selectCliente.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      
+      const cadastrarBtn = document.querySelector("button[onclick='cadastrarVeiculo()']");
+      cadastrarBtn.textContent = "Atualizar Veículo";
+      cadastrarBtn.onclick = function() {
+        atualizarVeiculo(placa);
+      };
+    }
+
+    // Função para atualizar veículo
+    function atualizarVeiculo(placaOriginal) {
+      const clienteId = parseInt(document.getElementById("selectCliente").value);
+      const placa = document.getElementById("veiculoPlaca").value;
+      const modelo = document.getElementById("veiculoModelo").value;
+      const cor = document.getElementById("veiculoCor").value;
+      const tipo = document.getElementById("veiculoTipo").value;
+      
+      if (!placa || !modelo || !cor || !tipo) {
+        return alert("Todos os campos são obrigatórios!");
+      }
+      
+      const veiculos = storage.get("veiculos");
+      
+      // Se a placa foi alterada, verificar se já existe
+      if (placa !== placaOriginal && veiculos.some(v => v.placa === placa)) {
+        return alert("Já existe um veículo com esta placa!");
+      }
+      
+      const index = veiculos.findIndex(v => v.placa === placaOriginal);
+      
+      if (index === -1) {
+        return alert("Veículo não encontrado!");
+      }
+      
+      veiculos[index] = new Veiculo(placa, modelo, cor, tipo, clienteId);
+      storage.set("veiculos", veiculos);
+      
+      // Atualizar registros que fazem referência a este veículo
+      const registros = storage.get("registros");
+      const registrosAtualizados = registros.map(r => {
+        if (r.veiculo.placa === placaOriginal) {
+          r.veiculo = veiculos[index];
+        }
+        return r;
+      });
+      storage.set("registros", registrosAtualizados);
+      
+      alert("Veículo atualizado com sucesso!");
+      listarVeiculos();
+      
+      // Resetar botão e formulário
+      const cadastrarBtn = document.querySelector("button[onclick^='atualizarVeiculo']");
+      cadastrarBtn.textContent = "Cadastrar Veículo";
+      cadastrarBtn.onclick = cadastrarVeiculo;
+      limparFormularioVeiculo();
+    }
+
+    // Função para remover veículo
+    function removerVeiculo(placa) {
+      if (!confirm("Tem certeza que deseja remover este veículo?")) {
+        return;
+      }
+      
+      // Verificar se o veículo está no estacionamento
+      const registros = storage.get("registros");
+      if (registros.some(r => r.veiculo.placa === placa && r.horaSaida === null)) {
+        return alert("Este veículo está no estacionamento! Registre a saída antes de removê-lo.");
+      }
+      
+      const veiculos = storage.get("veiculos");
+      const novosVeiculos = veiculos.filter(v => v.placa !== placa);
+      
+      if (veiculos.length === novosVeiculos.length) {
+        return alert("Veículo não encontrado!");
+      }
+      
+      storage.set("veiculos", novosVeiculos);
+      alert("Veículo removido com sucesso!");
+      listarVeiculos();
+    }
+
+    // Função para cadastrar funcionário
+    function cadastrarFuncionario() {
+      const nome = document.getElementById("funcionarioNome").value;
+      const documento = document.getElementById("funcionarioDocumento").value;
+      const matricula = document.getElementById("funcionarioMatricula").value;
+      const cargo = document.getElementById("funcionarioCargo").value;
+      
+      if (!nome || !documento || !matricula || !cargo) {
+        return alert("Todos os campos são obrigatórios!");
+      }
+      
+      const funcionarios = storage.get("funcionarios");
+      
+      // Verificar se matrícula já existe
+      if (funcionarios.some(f => f.matricula === matricula)) {
+        return alert("Já existe um funcionário com esta matrícula!");
+      }
+      
+      const funcionario = new Funcionario(nome, documento, matricula, cargo);
+      storage.add("funcionarios", funcionario);
+      alert("Funcionário cadastrado com sucesso!");
+      listarFuncionarios();
+      limparFormularioFuncionario();
+    }
+
+    // Função para listar funcionários
+    function listarFuncionarios() {
+      const funcionarios = storage.get("funcionarios");
+      const div = document.getElementById("funcionariosCadastrados");
+      
+      if (funcionarios.length === 0) {
+        div.innerHTML = "<p>Nenhum funcionário cadastrado.</p>";
+        return;
+      }
+      
+      div.innerHTML = "<ul>" + funcionarios.map(f => 
+        `<li>${f.nome} - ${f.cargo.toUpperCase()} (${f.matricula})<br>
+        Documento: ${f.documento}
+        <button onclick="editarFuncionario('${f.matricula}')">Editar</button>
+        <button onclick="removerFuncionario('${f.matricula}')">Remover</button></li>`
+      ).join("") + "</ul>";
+    }
+
+    // Função para limpar o formulário de funcionário
+    function limparFormularioFuncionario() {
+      document.getElementById("funcionarioNome").value = "";
+      document.getElementById("funcionarioDocumento").value = "";
+      document.getElementById("funcionarioMatricula").value = "";
+      document.getElementById("funcionarioCargo").value = "atendente";
+      
+      // Resetar botão se estiver em modo de edição
+      const cadastrarBtn = document.querySelector("button[onclick^='cadastrarFuncionario']");
+      if (cadastrarBtn) {
+        cadastrarBtn.onclick = cadastrarFuncionario;
+        cadastrarBtn.textContent = "Cadastrar Funcionário";
+      }
+    }
+
+    // Função para editar funcionário
+    function editarFuncionario(matricula) {
+      const funcionarios = storage.get("funcionarios");
+      const funcionario = funcionarios.find(f => f.matricula === matricula);
+      
+      if (!funcionario) {
+        return alert("Funcionário não encontrado!");
+      }
+      
+      document.getElementById("funcionarioNome").value = funcionario.nome;
+      document.getElementById("funcionarioDocumento").value = funcionario.documento;
+      document.getElementById("funcionarioMatricula").value = funcionario.matricula;
+      document.getElementById("funcionarioCargo").value = funcionario.cargo;
+      
+      const cadastrarBtn = document.querySelector("button[onclick^='cadastrarFuncionario']");
+      cadastrarBtn.textContent = "Atualizar Funcionário";
+      cadastrarBtn.onclick = function() {
+        atualizarFuncionario(matricula);
+      };
+    }
+
+    // Função para atualizar funcionário
+    function atualizarFuncionario(matriculaOriginal) {
+      const nome = document.getElementById("funcionarioNome").value;
+      const documento = document.getElementById("funcionarioDocumento").value;
+      const matricula = document.getElementById("funcionarioMatricula").value;
+      const cargo = document.getElementById("funcionarioCargo").value;
+      
+      if (!nome || !documento || !matricula || !cargo) {
+        return alert("Todos os campos são obrigatórios!");
+      }
+      
+      const funcionarios = storage.get("funcionarios");
+      
+      // Se a matrícula foi alterada, verificar se já existe
+      if (matricula !== matriculaOriginal && funcionarios.some(f => f.matricula === matricula)) {
+        return alert("Já existe um funcionário com esta matrícula!");
+      }
+      
+      const index = funcionarios.findIndex(f => f.matricula === matriculaOriginal);
+      
+      if (index === -1) {
+        return alert("Funcionário não encontrado!");
+      }
+      
+      funcionarios[index] = new Funcionario(nome, documento, matricula, cargo);
+      storage.set("funcionarios", funcionarios);
+      
+      alert("Funcionário atualizado com sucesso!");
+      listarFuncionarios();
+      limparFormularioFuncionario();
+    }
+
+    // Função para remover funcionário
+    function removerFuncionario(matricula) {
+      if (!confirm("Tem certeza que deseja remover este funcionário?")) {
+        return;
+      }
+      
+      const funcionarios = storage.get("funcionarios");
+      const novosFuncionarios = funcionarios.filter(f => f.matricula !== matricula);
+      
+      if (funcionarios.length === novosFuncionarios.length) {
+        return alert("Funcionário não encontrado!");
+      }
+      
+      storage.set("funcionarios", novosFuncionarios);
+      alert("Funcionário removido com sucesso!");
+      listarFuncionarios();
+    }
+
+    // Função para registrar entrada de veículo
+    function registrarEntrada() {
+      const placa = document.getElementById("entradaPlaca").value.trim();
+      
+      if (!placa) {
+        return alert("Informe a placa do veículo!");
+      }
+      
+      const veiculos = storage.get("veiculos");
+      const veiculo = veiculos.find(v => v.placa === placa);
+
+      if (!veiculo) {
+        return alert("Veículo não encontrado! Verifique a placa ou cadastre o veículo.");
+      }
+
+      const registros = storage.get("registros");
+      if (registros.some(r => r.veiculo.placa === placa && r.horaSaida === null)) {
+        return alert("Este veículo já está no estacionamento!");
+      }
+
+      const clientes = storage.get("clientes");
+      const cliente = clientes.find(c => c.id === veiculo.clienteId);
+      
+      if (!cliente) {
+        return alert("Cliente associado ao veículo não encontrado!");
+      }
+      
+      const novoId = registros.length > 0 ? Math.max(...registros.map(r => r.id)) + 1 : 1;
+      const novoRegistro = new RegistroEstacionamento(novoId, veiculo, cliente, new Date());
+
+      storage.add("registros", novoRegistro);
+      alert("Entrada registrada com sucesso!");
+      document.getElementById("entradaPlaca").value = "";
+      listarVeiculosNoEstacionamento();
+    }
+
+    // Função para registrar saída de veículo
+    function registrarSaida() {
+      const placa = document.getElementById("saidaPlaca").value.trim();
+      
+      if (!placa) {
+        return alert("Informe a placa do veículo!");
+      }
+      
+      const registros = storage.get("registros");
+      const index = registros.findIndex(r => r.veiculo.placa === placa && r.horaSaida === null);
+
+      if (index === -1) {
+        return alert("Veículo não encontrado no estacionamento ou já saiu!");
+      }
+
+      const registro = registros[index];
+      const horaSaida = new Date();
+      registro.horaSaida = horaSaida;
+      registro.valorCobrado = calcularCusto(registro.horaEntrada, horaSaida);
+      
+      registros[index] = registro;
+      storage.set("registros", registros);
+      
+      alert(`Saída registrada com sucesso!\nValor cobrado: R$ ${registro.valorCobrado.toFixed(2)}`);
+      document.getElementById("saidaPlaca").value = "";
+      listarVeiculosNoEstacionamento();
+      listarRegistros();
+    }
+
+    // Função para calcular o custo do estacionamento
+    function calcularCusto(entrada, saida) {
+      const horaEntrada = new Date(entrada);
+      const horaSaida = new Date(saida);
+      
+      // Calcular a diferença em horas (arredondar para cima)
+      const diferencaMs = horaSaida - horaEntrada;
+      const horas = Math.ceil(diferencaMs / (1000 * 60 * 60));
+      
+      // Primeira hora custa R$ 10, horas adicionais custam R$ 5 cada
+      const valorPrimeiraHora = 10;
+      const valorHorasAdicionais = Math.max(0, horas - 1) * 5;
+      
+      return valorPrimeiraHora + valorHorasAdicionais;
+    }
+
+    // Função para listar veículos no estacionamento
+    function listarVeiculosNoEstacionamento() {
+      const registros = storage.get("registros");
+      const veiculosEstacionados = registros.filter(r => r.horaSaida === null);
+      const div = document.getElementById("veiculosEstacionados");
+      
+      if (!div) return; // Se o elemento não existir na página atual
+      
+      if (veiculosEstacionados.length === 0) {
+        div.innerHTML = "<p>Nenhum veículo no estacionamento.</p>";
+        return;
+      }
+      
+      div.innerHTML = "<ul>" + veiculosEstacionados.map(r => {
+        const entrada = new Date(r.horaEntrada);
+        const tempoEstacionado = calcularTempoEstacionado(entrada, new Date());
+        
+        return `<li>
+          <strong>Placa:</strong> ${r.veiculo.placa}<br>
+          <strong>Veículo:</strong> ${r.veiculo.modelo} (${r.veiculo.cor})<br>
+          <strong>Cliente:</strong> ${r.cliente.nome}<br>
+          <strong>Entrada:</strong> ${formatarData(entrada)}<br>
+          <strong>Tempo:</strong> ${tempoEstacionado}
+        </li>`;
+      }).join("") + "</ul>";
+    }
+
+    // Função auxiliar para calcular tempo estacionado
+    function calcularTempoEstacionado(entrada, agora) {
+      const diferencaMs = agora - entrada;
+      const minutos = Math.floor(diferencaMs / (1000 * 60));
+      const horas = Math.floor(minutos / 60);
+      const minutosRestantes = minutos % 60;
+      
+      if (horas === 0) {
+        return `${minutosRestantes} minuto(s)`;
+      } else {
+        return `${horas} hora(s) e ${minutosRestantes} minuto(s)`;
+      }
+    }
+
+    // Função para listar registros finalizados
+    function listarRegistros() {
+      const registros = storage.get("registros");
+      const registrosFinalizados = registros.filter(r => r.horaSaida !== null);
+      const lista = document.getElementById("registrosFinalizados");
+      
+      if (!lista) return; // Se o elemento não existir na página atual
+      
+      if (registrosFinalizados.length === 0) {
+        lista.innerHTML = "<p>Nenhum registro finalizado.</p>";
+        return;
+      }
+      
+      // Ordenar registros do mais recente para o mais antigo
+      registrosFinalizados.sort((a, b) => new Date(b.horaSaida) - new Date(a.horaSaida));
+      
+      lista.innerHTML = registrosFinalizados.map(r => {
+        const entrada = new Date(r.horaEntrada);
+        const saida = new Date(r.horaSaida);
+        const tempoEstacionado = calcularTempoEstacionado(entrada, saida);
+        
+        return `<li>
+          <strong>Cliente:</strong> ${r.cliente.nome}<br>
+          <strong>Veículo:</strong> ${r.veiculo.modelo} (${r.veiculo.placa})<br>
+          <strong>Entrada:</strong> ${formatarData(entrada)}<br>
+          <strong>Saída:</strong> ${formatarData(saida)}<br>
+          <strong>Tempo:</strong> ${tempoEstacionado}<br>
+          <strong>Valor:</strong> R$ ${r.valorCobrado.toFixed(2)}
+        </li>`;
+      }).join("");
+    }
+
+    // Função auxiliar para formatar data
+    function formatarData(data) {
+      const dia = String(data.getDate()).padStart(2, '0');
+      const mes = String(data.getMonth() + 1).padStart(2, '0');
+      const ano = data.getFullYear();
+      const hora = String(data.getHours()).padStart(2, '0');
+      const minuto = String(data.getMinutes()).padStart(2, '0');
+      
+      return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
+    }
+
+    // Inicializar o sistema quando a página carregar
+    window.onload = function() {
+      // Inicializar arrays no localStorage se não existirem
+      if (!localStorage.getItem("clientes")) {
+        localStorage.setItem("clientes", JSON.stringify([]));
+      }
+      if (!localStorage.getItem("veiculos")) {
+        localStorage.setItem("veiculos", JSON.stringify([]));
+      }
+      if (!localStorage.getItem("funcionarios")) {
+        localStorage.setItem("funcionarios", JSON.stringify([]));
+      }
+      if (!localStorage.getItem("registros")) {
+        localStorage.setItem("registros", JSON.stringify([]));
+      }
+      
+      // Carregar dados iniciais
+      listarClientes();
+      showTab('tab-cliente');
+    };
+  </script>
+</body>
+</html>
