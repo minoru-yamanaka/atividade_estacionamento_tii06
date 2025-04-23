@@ -1,0 +1,115 @@
+/* css/style.css */
+
+/* Estilo base */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+}
+section {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+input, select {
+    margin: 5px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%; /* Altera de largura fixa para responsiva */
+    max-width: 400px;
+    box-sizing: border-box;
+}
+button {
+    margin: 5px;
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+h1 {
+    color: #333;
+    text-align: center;
+}
+h2 {
+    margin-top: 0;
+    color: #444;
+}
+label {
+    display: inline-block;
+    width: 100%;
+    max-width: 150px;
+    margin-right: 10px;
+    vertical-align: top;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #4CAF50;
+}
+.tab-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.tab-navigation button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.tab-navigation button a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 600px) {
+    body {
+        margin: 10px;
+    }
+
+    section {
+        padding: 10px;
+    }
+
+    label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    input, select {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .tab-navigation {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab-navigation button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
