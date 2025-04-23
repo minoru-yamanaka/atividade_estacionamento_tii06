@@ -2,9 +2,8 @@
 
 [Este é um sistema web para gerenciamento de estacionamento desenvolvido com HTML, CSS e JavaScript, usando a arquitetura de módulos ES6 para organizar o código de forma eficiente.]()
 
-- [Sistema de Estacionamento 00](../atividade_estacionamento_tii06-main/Estacionamento-00\Index.html)
-- [Sistema de Estacionamento 01](../atividade_estacionamento_tii06-main/Index.html)
-
+- [Sistema de Estacionamento 00](Estacionamento-00/Index.html)
+- [Sistema de Estacionamento 01](https://minoru-yamanaka.github.io/atividade_estacionamento_tii06/)
 ![image.png](./image.png)
 
 ## Visão Geral da Arquitetura
