@@ -4,7 +4,12 @@
 
 - [Sistema de Estacionamento 00](https://minoru-yamanaka.github.io/atividade_estacionamento_tii06/Estacionamento-00/Index.html)
 - [Sistema de Estacionamento 01](https://minoru-yamanaka.github.io/atividade_estacionamento_tii06/)
+  
 ![image.png](./image.png)
+
+
+
+
 
 ## Visão Geral da Arquitetura
 
@@ -26,8 +31,9 @@ Sistema-Estacionamento/
 
 ## Fluxo de Dados e Relacionamentos entre Módulos
 
-```mermaid
-graph TD
+```
+ "Relacionamentos entre Módulos"
+
     A[index.html] --> B[script.js]
 
     B[script.js] --> C[Storage.js]
@@ -36,14 +42,20 @@ graph TD
     D[Functions.js] --> C[Storage.js]
     D[Functions.js] --> E[Classes.js]
     
-    subgraph "Fluxo de Dados"
-        B[script.js]    -- "Inicializa a aplicação" --> D[Functions.js]
-        D[Functions.js] -- "Manipula dados"         --> C[Storage.js]
-        C[Storage.js]   -- "Persiste dados"         --> F[(LocalStorage)]
-    end
+ "Fluxo de Dados"
+
+    B[script.js]    -- "Inicializa a aplicação" --> D[Functions.js]
+    D[Functions.js] -- "Manipula dados"         --> C[Storage.js]
+    C[Storage.js]   -- "Persiste dados"         --> F[(LocalStorage)]
+
 ```
 
+## Visão Geral da Arquitetura e Fluxo de Dados
+
+![diagramaa](./diagrama.svg)
+
 </br>
+
 # Módulos e suas Responsabilidades
 
 ### 1. `script.js`
@@ -69,6 +81,7 @@ import {
 ```
 
 ### 2. `Storage.js`
+
 Gerencia o armazenamento e persistência de dados:
 
 - **Exporta:**
@@ -332,3 +345,5 @@ Para uma aplicação mais robusta, o sistema de armazenamento poderia ser expand
 5. **Criptografia**: Para dados mais sensíveis
 
 Essa implementação de armazenamento, embora simples, fornece uma base sólida para persistência de dados no navegador, permitindo que o sistema de estacionamento mantenha seu estado entre as sessões do usuário.
+
+---
